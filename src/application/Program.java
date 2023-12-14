@@ -24,33 +24,30 @@ public class Program {
 		System.out.println("Digite o ckeck-out 'dd/MM/yyyy' ");
 		Date checkout = sdf.parse(sc.next());
 		
-		if(!checkout.after(checkin)) {
-			System.out.println("Erro, data do checkin, posterior ao checkout");
-		}else {
+		try {
+			
+			String valid = Reservation.validDate(checkin, checkout);
 			Reservation reservation = new Reservation(number, checkin, checkout);
 			System.out.println(reservation.toString());
 			
 			
-			System.out.println();
-			System.out.println("Atualização das datas");
 			System.out.println("Digite o ckeck-in 'dd/MM/yyyy' ");
 			Date checkinUpdate = sdf.parse(sc.next());
 			
 			System.out.println("Digite o ckeck-out 'dd/MM/yyyy' ");
 			Date checkoutUpdate = sdf.parse(sc.next());
 			
-			Date now = new Date();
-			if(checkinUpdate.before(now) || checkoutUpdate.before(now)) {
-				System.out.println("Erro no update");
-			}else if(!checkoutUpdate.after(checkinUpdate)) {
-					System.out.println("Erro, data do checkin, posterior ao checkout");
+			String update = reservation.updateDates(checkinUpdate, checkoutUpdate);
+			if (update != null) {
+				System.out.println(update);
 				
 			}else {
-				reservation.updateDates(checkinUpdate, checkoutUpdate);
-				
-				System.out.println(reservation.toString());
+				System.out.println(reservation.toString());	
 			}
 			
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
 		}
 		sc.close();	
 	}

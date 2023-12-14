@@ -27,9 +27,14 @@ public class Reservation {
 
 	public Reservation(int roomNumber, Date checkin, Date checkout) {
 		super();
-		this.roomNumber = roomNumber;
-		this.checkin = checkin;
-		this.checkout = checkout;
+		String valid = validDate(checkin, checkout);
+		if(valid != null) {
+			System.out.println(valid);
+		}else {
+			this.roomNumber = roomNumber;
+			this.checkin = checkin;
+			this.checkout = checkout;
+		}
 	}
 	
 	public long duration() {
@@ -38,9 +43,25 @@ public class Reservation {
 		
 	}
 	
-	public void updateDates(Date checkIn, Date checkOut) {
+	public static String validDate(Date checkIn, Date checkOut) {
+		if(!checkOut.after(checkIn)) {
+			return "Erro, data do checkin, posterior ao checkout";
+		}
+		return null;
+	}
+	
+	public  String updateDates(Date checkIn, Date checkOut) {
+		Date now = new Date();
+		
+		if(checkIn.before(now) || checkOut.before(now)) {
+			return"Erro no update";
+		}
+		validDate(checkIn, checkOut);
+			
 		this.checkin = checkIn;
 		this.checkout = checkOut;
+		return null;
+		
 	}
 	
 	@Override
